@@ -32,4 +32,5 @@ jobs:
       run: dir
 
     - name: Print ASM
+      working-directory: ${{env.SOLUTION_FILE_PATH}}/${{env.BUILD_CONFIGURATION}}
       run: if (Test-Path IncorrectInstructionsWithPch.asm) { cat IncorrectInstructionsWithPch.asm }
