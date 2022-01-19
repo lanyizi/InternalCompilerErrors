@@ -33,4 +33,12 @@ jobs:
 
     - name: Print ASM
       working-directory: ${{env.SOLUTION_FILE_PATH}}/${{env.BUILD_CONFIGURATION}}
-      run: if (Test-Path IncorrectInstructionsWithPch.asm) { cat IncorrectInstructionsWithPch.asm }
+      run: >
+        $print = $False
+        if (Test-Path IncorrectInstructionsWithPch.asm) { 
+          cat IncorrectInstructionsWithPch.asm | where {
+            $print = $print -or ($_ -match "_main\s+PROC");
+            $print = $print -and (-not ($_ -match "_main\s+ENDP"));
+            return $print;
+          }
+        }
